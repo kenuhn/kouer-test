@@ -1,4 +1,4 @@
-import Slider from "../Component/Slider/slider";
+import Slider from "../Component/store/StoreSlider/slider";
 
 export const HomePage = (): JSX.Element => {
   return (

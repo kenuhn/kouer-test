@@ -1,76 +1,73 @@
-import { FormControl } from "@mui/base/FormControl";
-import { Box, Button, Container, Stack, Typography } from "@mui/material";
-import TextField from "@mui/material/TextField";
-import { useEffect, useRef, useState } from "react";
-import { userService } from "../../Repository/user";
+import {
+  Box,
+  Button,
+  Container,
+  FormControl,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
+import React, { useEffect, useRef, useState } from "react";
+import { userService } from "../../Domain/user/useCases";
+import { TnewUser, TuserError } from "../../Entity/user";
 
 const RegisterForm: React.FC<{ onSwitch: () => void }> = ({ onSwitch }) => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<TnewUser>({
     name: "",
     email: "",
     password: "",
     products: [],
   });
 
-  const [isSamePassword, setIsSamePassword] = useState(false);
+  const [errors, setErrors] = useState<TuserError>({ message: "" });
+
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
 
-  const ref = useRef(null);
-
   const handleSubmit = async () => {
     if (
-      nameRef.current !== null &&
-      emailRef.current !== null &&
-      passwordRef.current !== null &&
-      confirmPasswordRef.current !== null
+      passwordRef.current &&
+      confirmPasswordRef.current &&
+      passwordRef.current.value !== confirmPasswordRef.current.value
     ) {
-      if (passwordRef.current.value == confirmPasswordRef.current.value) {
-        setFormData({
-          name: nameRef.current.value,
-          password: passwordRef.current.value,
-          email: emailRef.current.value,
-          products: [],
-        });
-        setIsSamePassword(true);
-      } else {
-        setIsSamePassword(false);
-        alert("erreur le password est différent: ");
-      }
+      setErrors({ ...errors, password: "Passwords do not match" });
+      return;
     }
+
+    setFormData({
+      name: nameRef.current?.value || "",
+      email: emailRef.current?.value || "",
+      password: passwordRef.current?.value || "",
+      products: [],
+    });
   };
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const manageRegister = async () => {
+    try {
+      const response = await userService.register(formData);
 
-  const handleEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
-  };
-
-  const handleName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
-  };
-
-  const handlePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
-  };
-
-  const handleConfirmPassword = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setConfirmPassword(event.target.value);
+      if (typeof response === "string") {
+        setErrors({ ...errors, general: response });
+      } else if ("message" in response && response.message === "error") {
+        setErrors(response);
+      } else {
+        alert("Registration successful");
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
+      setErrors({ ...errors, general: "Failed to register user" });
+    }
   };
 
   useEffect(() => {
-    if (isSamePassword) {
-      console.log("formData", formData);
-      userService.create(formData);
-    }
-  }, [isSamePassword, formData]);
+    const register = async () => {
+      console.log("hellp");
+      return manageRegister();
+    };
+    register();
+  }, [formData]);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -105,46 +102,55 @@ const RegisterForm: React.FC<{ onSwitch: () => void }> = ({ onSwitch }) => {
           >
             Sign Up
           </Typography>
-          <FormControl ref={ref}>
+          <FormControl>
             <TextField
               placeholder="Write your name"
               inputRef={nameRef}
-              value={name}
-              onChange={handleName}
+              error={!!errors.name}
+              helperText={errors.name}
               sx={{
                 width: "500px",
+                margin: "10px 0px",
               }}
             />
             <TextField
               placeholder="Write your email"
               inputRef={emailRef}
-              value={email}
-              onChange={handleEmail}
+              error={!!errors.email}
+              helperText={errors.email}
               sx={{
                 width: "500px",
-                margin: "10px 0px 10px 0px",
+                margin: "10px 0px",
               }}
             />
             <TextField
-              placeholder="password"
+              placeholder="Password"
+              type="password"
               inputRef={passwordRef}
-              value={password}
-              onChange={handlePassword}
+              error={!!errors.password}
+              helperText={errors.password}
               sx={{
                 width: "500px",
-                margin: "0 0px 10px 0px",
+                margin: "10px 0px",
               }}
             />
             <TextField
-              placeholder="confirm password"
+              placeholder="Confirm Password"
+              type="password"
               inputRef={confirmPasswordRef}
-              value={confirmPassword}
-              onChange={handleConfirmPassword}
+              error={!!errors.password}
+              helperText={errors.password}
               sx={{
                 width: "500px",
-                margin: "0 0px 10px 0px",
+                margin: "10px 0px",
               }}
             />
+
+            {errors.general && (
+              <Typography variant="body2" color="error" sx={{ mt: 1 }}>
+                {errors.general}
+              </Typography>
+            )}
 
             <Button
               onClick={handleSubmit}
@@ -161,6 +167,7 @@ const RegisterForm: React.FC<{ onSwitch: () => void }> = ({ onSwitch }) => {
               onClick={onSwitch}
               sx={{
                 width: "500px",
+                marginTop: "10px",
               }}
             >
               Sign In

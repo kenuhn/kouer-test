@@ -1,9 +1,17 @@
+import { TexistingProduct } from "../../Entity/product";
 import { TexistingUser, TnewUser, userDto } from "../../Entity/user";
 export interface IUserMockRepository {
   create(user: TnewUser): Promise<TexistingUser | string>;
   read(id: number): Promise<TexistingUser | string>;
   findByNameAndPassword(user: userDto): Promise<TexistingUser | string>;
-  /*   createProduct(id: number, product: TexistingProduct): Promise<string>; */
+  addProduct(id: number, product: TexistingProduct): Promise<string> | string;
+}
+
+export interface IUserRepository {
+  create(user: TnewUser): Promise<TexistingUser | string>;
+  read(id: number): Promise<TexistingUser | string>;
+  login(user: userDto): Promise<TexistingUser | string>;
+  addProduct(id: number, product: TexistingProduct): Promise<string> | string;
 }
 
 export class UserRepository {
@@ -87,6 +95,30 @@ export class UserRepository {
       return "unknown error";
     }
   }
+
+  async addProduct(id: number, product: TexistingProduct) {
+    try {
+      if (this.#isApi == true) {
+        const response = await fetch(`https://my-api.com/${id}/products`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(product),
+        });
+
+        const data = await response.json();
+
+        return data;
+      }
+      return this.#mockRepository.addProduct(id, product);
+    } catch (error) {
+      if (error instanceof Error) {
+        return error.message;
+      }
+      return "unknown error";
+    }
+  }
 }
 
 export class UserMockRepository {
@@ -116,9 +148,7 @@ export class UserMockRepository {
   }
 
   async findByNameAndPassword(user: userDto): Promise<TexistingUser | string> {
-    const isUser = this.#users.find(
-      (item) => item.email === user.email && item.password === user.password
-    );
+    const isUser = this.#users.find((item) => item.email === user.email);
 
     if (isUser) {
       return new Promise((resolve) => setTimeout(() => resolve(isUser), 500));
@@ -126,13 +156,14 @@ export class UserMockRepository {
     return "User not found";
   }
 
-  /*   createProduct(id: number, product: TexistingProduct): Promise< string> {
-
+  addProduct(id: number, product: TexistingProduct): Promise<string> | string {
     const user = this.#users.find((user) => user.id === id);
     if (user) {
       user.products.push(product);
-      return new Promise((resolve) => setTimeout(() => resolve("product added"), 500));
+      return new Promise((resolve) =>
+        setTimeout(() => resolve("product added"), 500)
+      );
     }
     return "User not found";
-  } */
+  }
 }

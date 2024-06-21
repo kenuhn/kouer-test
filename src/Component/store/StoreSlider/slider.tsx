@@ -6,8 +6,9 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/system";
 import { useState } from "react";
+import { userService } from "../../../Domain/user/useCases";
 
-import db from "../../Mock-db/db.json";
+import db from "../../../Mock-db/db.json";
 const products = db.product;
 const Root = styled("div")({
   display: "flex",
@@ -60,6 +61,14 @@ const ProductSlider = () => {
     );
   };
 
+  const handleAddToCart = () => {
+    const id = localStorage.getItem("userId");
+    const idNumber = Number(id);
+    if (idNumber) {
+      userService.addToCart(idNumber, products[slideIndex]);
+    }
+  };
+
   return (
     <Root>
       <ButtonLeft
@@ -87,6 +96,9 @@ const ProductSlider = () => {
               <Typography variant="body2" color="text.secondary">
                 {product.description}
               </Typography>
+              <Button size="small" onClick={handleAddToCart}>
+                Add to Cart
+              </Button>
             </CardContent>
           </CardWrapper>
         ))}

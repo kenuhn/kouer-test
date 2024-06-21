@@ -4,7 +4,7 @@ import TextField from "@mui/material/TextField";
 import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authContext } from "../../App";
-import { userService } from "../../Repository/user";
+import { userService } from "../../Domain/user/useCases";
 
 const LoginForm: React.FC<{ onSwitch: () => void }> = ({ onSwitch }) => {
   const navigate = useNavigate();
