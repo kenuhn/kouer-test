@@ -16,8 +16,8 @@ export const HomePage = (): JSX.Element => {
   return (
     <CartProvider>
       <CenteredContainer maxWidth="md">
-        <Typography variant="h1" gutterBottom>
-          Home Page
+        <Typography variant="h3" gutterBottom>
+          Welcome
         </Typography>
         <Stack spacing={3} alignItems="center">
           <Slider />

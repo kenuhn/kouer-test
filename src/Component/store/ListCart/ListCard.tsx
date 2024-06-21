@@ -8,24 +8,34 @@ const CartList: React.FC = () => {
   console.log("productContext", cart);
 
   return (
-    <Card sx={{ width: "100%", minHeight: "300px" }}>
+    <Card
+      sx={{ width: "100%", minHeight: "300px", backgroundColor: "#f9f9f9" }}
+    >
       <CardContent>
-        <Typography variant="h5" component="div">
+        <Typography variant="h5" component="div" sx={{ marginBottom: 2 }}>
           Mon panier
         </Typography>
-        <ul>
+        <ul style={{ padding: 0 }}>
           {cart.length > 0 &&
             cart.map((product, index) => (
               <Box
                 key={index}
                 sx={{
-                  boxShadow: 1,
-                  borderRadius: 4,
-                  marginBottom: 2,
-                  padding: 2,
+                  boxShadow: 3, // Niveau d'ombre plus prononcé
+                  borderRadius: 2, // Bordures arrondies
+                  marginBottom: 2, // Marge inférieure entre les éléments de la liste
+                  padding: 2, // Espacement intérieur
+                  backgroundColor: "#fff",
+                  transition: "transform 0.2s",
+                  "&:hover": {
+                    transform: "scale(1.02)",
+                    boxShadow: 6,
+                  },
                 }}
               >
-                <Typography>{product.name}</Typography>
+                <Typography sx={{ fontWeight: "bold", color: "#333" }}>
+                  {product.name}
+                </Typography>
                 <Typography color="text.secondary">
                   {product.description}
                 </Typography>
