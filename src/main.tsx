@@ -6,7 +6,7 @@ import {
   createBrowserRouter,
 } from "react-router-dom";
 import App from "./App.tsx";
-import Form from "./Component/form/Form.tsx";
+import Form from "./Component/Form/AuthForm.tsx";
 import { HomePage } from "./Pages/HomePage.tsx";
 import "./index.css";
 

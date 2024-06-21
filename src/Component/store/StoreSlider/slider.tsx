@@ -6,9 +6,9 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/system";
 import { useState } from "react";
-import { userService } from "../../../Domain/user/useCases";
-
 import db from "../../../Mock-db/db.json";
+import { useCartContext } from "../Context/ProductContext";
+
 const products = db.product;
 const Root = styled("div")({
   display: "flex",
@@ -61,11 +61,13 @@ const ProductSlider = () => {
     );
   };
 
+  const { addToCart } = useCartContext();
+
   const handleAddToCart = () => {
     const id = localStorage.getItem("userId");
     const idNumber = Number(id);
     if (idNumber) {
-      userService.addToCart(idNumber, products[slideIndex]);
+      addToCart(products[slideIndex]);
     }
   };
 

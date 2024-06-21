@@ -13,7 +13,7 @@ export interface IUserService {
   register(
     user: TnewUser
   ): Promise<TexistingUser | string | { [key: string]: string }>;
-  getUser(id: number): Promise<TexistingUser | string>;
+  getUser(id: number): Promise<TexistingUser | null>;
   login(user: userDto): Promise<TexistingUser | string>;
   addToCart(id: number, product: TexistingProduct): Promise<string>;
 }
@@ -42,8 +42,26 @@ class UserService implements IUserService {
     return user;
   }
 
-  async getUser(id: number): Promise<TexistingUser | string> {
-    const user: TexistingUser | string = await this.userRepository.read(id);
+  async getUser(): Promise<TexistingUser | null> {
+    const idStorage = localStorage.getItem("userId");
+    if (idStorage) {
+      const user: TexistingUser | string = await this.userRepository.read(
+        Number(idStorage)
+      );
+
+      if (typeof user === "string") {
+        return null;
+      }
+      return user;
+    }
+
+    return null;
+  }
+
+  async login(userDTO: userDto): Promise<TexistingUser | string> {
+    const user: TexistingUser | string = await this.userRepository.login(
+      userDTO
+    );
     if (typeof user === "string") {
       return user;
     }
@@ -51,10 +69,6 @@ class UserService implements IUserService {
     localStorage.setItem("userId", JSON.stringify(user.id));
 
     return user;
-  }
-
-  async login(user: userDto): Promise<TexistingUser | string> {
-    return this.userRepository.login(user);
   }
 
   async addToCart(id: number, product: TexistingProduct): Promise<string> {
