@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import { styled } from "@mui/system";
 
 const HeaderRoot = styled("div")({
-  flexGrow: 1,
+  width: "100%",
 });
 
 const MenuButton = styled(IconButton)(({ theme }) => ({

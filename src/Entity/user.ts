@@ -1,12 +1,17 @@
-import { newProduct } from "./product";
+import { TnewProduct } from "./product";
 
-export type NewUser = {
+export type TnewUser = {
   name: string;
   email: string;
   password: string;
-  products: newProduct[];
+  products: TnewProduct[];
 };
 
-export type ExistingUser = NewUser & {
-  id: string;
+export type TexistingUser = TnewUser & {
+  id: number;
+};
+
+export type userDto = {
+  email: string;
+  password: string;
 };
