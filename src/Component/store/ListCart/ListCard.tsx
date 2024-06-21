@@ -19,10 +19,10 @@ const CartList: React.FC = () => {
               <Box
                 key={index}
                 sx={{
-                  boxShadow: 1, // Niveau d'ombre léger
-                  borderRadius: 4, // Bordures arrondies
-                  marginBottom: 2, // Marge inférieure entre les éléments de la liste
-                  padding: 2, // Espacement intérieur
+                  boxShadow: 1,
+                  borderRadius: 4,
+                  marginBottom: 2,
+                  padding: 2,
                 }}
               >
                 <Typography>{product.name}</Typography>
