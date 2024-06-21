@@ -24,7 +24,6 @@ const Form = () => {
   return (
     <div
       style={{
-        width: "100vh",
         display: "flex",
         justifyContent: "center",
         color: "white",

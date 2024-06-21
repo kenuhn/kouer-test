@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { authContext } from "../App";
@@ -15,5 +16,27 @@ export const Auth = () => {
     };
     redirect();
   }, []);
-  return <Form />;
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+      }}
+    >
+      <Box
+        sx={{
+          p: 3,
+          bgcolor: "background.paper",
+          borderRadius: 1,
+          maxWidth: 400, // Ajustez la largeur maximale selon vos besoins
+          width: "100%",
+          boxShadow: 1, // Ajoute une légère ombre
+        }}
+      >
+        <Form />
+      </Box>
+    </Box>
+  );
 };

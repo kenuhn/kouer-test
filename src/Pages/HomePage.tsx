@@ -9,7 +9,7 @@ const CenteredContainer = styled(Container)({
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "center",
-  minHeight: "100vh", // Assure que le contenu soit centré verticalement sur toute la hauteur de la vue
+  minHeight: "100vh",
 });
 
 export const HomePage = (): JSX.Element => {

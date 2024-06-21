@@ -1,10 +1,14 @@
-import AccountCircle from "@mui/icons-material/AccountCircle";
 import MenuIcon from "@mui/icons-material/Menu";
 import AppBar from "@mui/material/AppBar";
-import IconButton from "@mui/material/IconButton";
+
+import LogoutIcon from "@mui/icons-material/Logout";
+import { IconButton } from "@mui/material";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/system";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { authContext } from "../../App";
 
 const HeaderRoot = styled("div")({
   width: "100%",
@@ -20,6 +24,14 @@ const Title = styled(Typography)({
 });
 
 export const Header = () => {
+  const auth = useContext(authContext);
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem("userId");
+    auth.setIsAuth(false);
+    navigate("/authentification");
+  };
+
   return (
     <HeaderRoot>
       <AppBar position="static">
@@ -27,9 +39,9 @@ export const Header = () => {
           <MenuButton edge="start" color="inherit" aria-label="menu">
             <MenuIcon />
           </MenuButton>
-          <Title variant="h6">Mon Application</Title>
-          <IconButton color="inherit">
-            <AccountCircle />
+          <Title variant="h6">Kouer Test</Title>
+          <IconButton color="inherit" onClick={handleLogout}>
+            <LogoutIcon />
           </IconButton>
         </Toolbar>
       </AppBar>

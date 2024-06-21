@@ -17,6 +17,8 @@ function App() {
     const userId = localStorage.getItem("userId");
     if (userId) {
       setIsAuth(true);
+    } else {
+      setIsAuth(false);
     }
   }, []);
 

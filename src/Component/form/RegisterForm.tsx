@@ -18,6 +18,7 @@ const RegisterForm: React.FC<{ onSwitch: () => void }> = ({ onSwitch }) => {
     password: "",
     products: [],
   });
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const [errors, setErrors] = useState<TuserError>({ message: "" });
 
@@ -42,6 +43,7 @@ const RegisterForm: React.FC<{ onSwitch: () => void }> = ({ onSwitch }) => {
       password: passwordRef.current?.value || "",
       products: [],
     });
+    setFormSubmitted(true);
   };
 
   const manageRegister = async () => {
@@ -63,6 +65,7 @@ const RegisterForm: React.FC<{ onSwitch: () => void }> = ({ onSwitch }) => {
 
   useEffect(() => {
     const register = async () => {
+      if (!formSubmitted) return;
       console.log("hellp");
       return manageRegister();
     };
@@ -83,7 +86,7 @@ const RegisterForm: React.FC<{ onSwitch: () => void }> = ({ onSwitch }) => {
         <Stack
           sx={{
             width: "600px",
-            height: "450px",
+            padding: "20px",
             gap: "1px",
             backgroundColor: "white",
             color: "black",
