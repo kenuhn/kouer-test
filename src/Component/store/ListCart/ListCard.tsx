@@ -7,7 +7,7 @@ const CartList: React.FC = () => {
   console.log("productContext", cart);
 
   return (
-    <Card>
+    <Card sx={{ width: "100vh", minHeight: "300px" }}>
       <CardContent>
         <Typography variant="h5" component="div">
           Cart Items

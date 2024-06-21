@@ -14,8 +14,11 @@ function App() {
   const [isAuth, setIsAuth] = useState(false);
 
   useEffect(() => {
-    console.log(isAuth);
-  }, [isAuth]);
+    const userId = localStorage.getItem("userId");
+    if (userId) {
+      setIsAuth(true);
+    }
+  }, []);
 
   return (
     <>
